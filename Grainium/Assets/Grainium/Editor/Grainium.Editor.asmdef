@@ -1,0 +1,18 @@
+{
+    "name": "Grainium.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:bbe9bf65ae3726a4cbb401f68fcda566"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
