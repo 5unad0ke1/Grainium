@@ -1,4 +1,4 @@
 # Grainium
 
-[English](README_JA.md)
+[English](README.md)
 Unity向けのエディタ拡張を提供します
