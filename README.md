@@ -1,4 +1,4 @@
 # Grainium
 
-[日本語](README_JA.md)
+[日本語](README.md)
 Provides editor extensions for Unity
