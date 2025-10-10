@@ -1,0 +1,11 @@
+{
+    "name": "com.5unad0ke1.grainium",
+    "version": "1.0.0",
+    "displayName": "Grainium",
+    "description": "Provides editor extensions for Unity.",
+    "unity": "2021.3",
+    "author": {
+        "name": "5unad0ke1",
+        "url": "https://github.com/5unad0ke1"
+    }
+}
