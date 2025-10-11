@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Sunadokei
+namespace Grainium
 {
     [System.Serializable]
     public sealed class InterfacePointer<T> where T : class

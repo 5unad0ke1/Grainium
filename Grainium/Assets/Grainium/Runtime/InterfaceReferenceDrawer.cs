@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-namespace Sunadokei
+namespace Grainium
 {
     [CustomPropertyDrawer(typeof(InterfacePointer<>), true)]
     public class InterfaceReferenceDrawer : PropertyDrawer

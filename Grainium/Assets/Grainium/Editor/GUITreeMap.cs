@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Sunadokei.EditorEx
+namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class GUITreeMap
@@ -26,7 +26,7 @@ namespace Sunadokei.EditorEx
         }
         private static void OnGUIHierarchy(int instanceID, Rect selectionRect)
         {
-            if (!EditorPrefs.GetBool(PrefsKeyName.TreeMapHierarchy, false))
+            if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapHierarchy)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Sunadokei.EditorEx
             Transform parent = gameObj.transform;
             bool hasChild = parent.childCount > 0;
 
-            if (EditorPrefs.GetBool(PrefsKeyName.TreeMapColor, false))
+            if (GrainiumSettings.GetOrCreateInstance().ShowComponentColors)
                 if (TryGetColor(gameObj, out var color))
                 {
                     var rect = selectionRect;
@@ -87,7 +87,7 @@ namespace Sunadokei.EditorEx
         }
         private static void OnGUIProject(string guid, Rect selectionRect)
         {
-            if (!EditorPrefs.GetBool(PrefsKeyName.TreeMapProject, false))
+            if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapProject)
             {
                 return;
             }
@@ -216,32 +216,32 @@ namespace Sunadokei.EditorEx
         {
             if (obj.TryGetComponent(out Rigidbody rb) || obj.TryGetComponent(out Rigidbody2D rb2d))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_RB);
+                color = GrainiumSettings.GetOrCreateInstance().ColorRigidbody;
                 return true;
             }
             if (obj.TryGetComponent(out Collider col) || obj.TryGetComponent(out Collider2D col2))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_Collider);
+                color = GrainiumSettings.GetOrCreateInstance().ColorCollider;
                 return true;
             }
             if (obj.TryGetComponent(out Camera cam))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_Cam);
+                color = GrainiumSettings.GetOrCreateInstance().ColorCamera;
                 return true;
             }
             if (obj.TryGetComponent(out AudioSource audio))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_Audio);
+                color = GrainiumSettings.GetOrCreateInstance().ColorAudio;
                 return true;
             }
             if(obj.TryGetComponent(out Light light))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_Light);
+                color = GrainiumSettings.GetOrCreateInstance().ColorLight;
                 return true;
             }
             if (obj.TryGetComponent(out RectTransform rect))
             {
-                color = Prefs.GetColor(PrefsKeyName.TreeMapColor_GUI);
+                color = GrainiumSettings.GetOrCreateInstance().ColorGUI;
                 return true;
             }
 

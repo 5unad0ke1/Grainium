@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Sunadokei.EditorEx
+namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class InspectorButtons
@@ -16,8 +16,10 @@ namespace Sunadokei.EditorEx
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
-            PingButton(editor);
-            PropertiesWindowButton(editor);
+            if(GrainiumSettings.GetOrCreateInstance().ShowPingButton)
+                PingButton(editor);
+            if (GrainiumSettings.GetOrCreateInstance().ShowPropertiesButton)
+                PropertiesWindowButton(editor);
 
             GUILayout.EndHorizontal();
         }

@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Sunadokei.EditorEx
+namespace Grainium.EditorEx
 {
     [CustomPropertyDrawer(typeof(InterfacePointer<>), true)]
     public class InterfacePointerDrawer : PropertyDrawer

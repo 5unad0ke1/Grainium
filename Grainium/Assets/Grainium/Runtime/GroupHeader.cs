@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Sunadokei
+namespace Grainium
 {
     public sealed class GroupHeader : MonoBehaviour
     {

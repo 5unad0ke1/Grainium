@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Sunadokei.EditorEx
+namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class HierarchyGUIComponent
@@ -16,6 +16,12 @@ namespace Sunadokei.EditorEx
 
         private static void OnGUI(int instanceID, Rect selectionRect)
         {
+            bool showComponentIcons = GrainiumSettings.GetOrCreateInstance().ShowComponentIcons;
+            bool showActiveToggles = GrainiumSettings.GetOrCreateInstance().ShowActiveToggles;
+
+            if (!showComponentIcons && !showActiveToggles)
+                return;
+
             // instanceID をオブジェクト参照に変換
             var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (gameObj == null)
@@ -30,7 +36,15 @@ namespace Sunadokei.EditorEx
                 return;
             }
 
-            selectionRect.x = selectionRect.xMax - ICON_SIZE * components.Length;
+            if (showActiveToggles)
+            {
+                selectionRect.x = selectionRect.xMax - ICON_SIZE * components.Length;
+            }
+            else
+            {
+
+                selectionRect.x = selectionRect.xMax - ICON_SIZE * (components.Length - 1);
+            }
             if (IsPrefab(gameObj))
             {
                 selectionRect.x -= ICON_SIZE;
@@ -40,6 +54,12 @@ namespace Sunadokei.EditorEx
 
             foreach (var component in components)
             {
+                if (!showComponentIcons)
+                {
+                    selectionRect.x += ICON_SIZE;
+                    continue;
+                }
+
                 if (component is Transform)
                 {
                     selectionRect.x += ICON_SIZE;
@@ -52,6 +72,9 @@ namespace Sunadokei.EditorEx
                 GUI.DrawTexture(selectionRect, texture2D);
                 selectionRect.x += ICON_SIZE;
             }
+
+            if (!showActiveToggles)
+                return;
 
             bool active = gameObj.activeSelf;
             bool value = GUI.Toggle(selectionRect, active, "");
