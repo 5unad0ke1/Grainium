@@ -1,6 +1,8 @@
 # Grainium
 
-[English](README.md)
+[![license](https://img.shields.io/badge/LICENSE-MIT-green.svg)](LICENSE)
+
+日本語 | [English](README.md)
 
 Unity向けのエディタ拡張を提供します
 

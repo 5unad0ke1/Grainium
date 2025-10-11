@@ -1,6 +1,8 @@
 # Grainium
 
-[日本語](README_JA.md)
+[![license](https://img.shields.io/badge/LICENSE-MIT-green.svg)](LICENSE)
+
+[日本語](README_JA.md) | English
 
 Provides editor extensions for Unity
 
