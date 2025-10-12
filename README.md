@@ -13,7 +13,7 @@ Provides editor extensions for Unity's Inspector, Hierarchy, and Project views.
 
 ## Via Package Manager
 1. Open Unity Package Manager
-2. Click `+` → `add package from git URL...`
+2. Click on the `+` button → `add package from git URL...`
 3. Enter the following URL:
 
 ```
