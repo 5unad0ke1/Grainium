@@ -16,6 +16,8 @@ namespace Grainium.EditorEx
         [SerializeField] private bool _showTreeMapHierarchy = true;
         [SerializeField] private bool _showComponentIcons = true;
         [SerializeField] private bool _showActiveToggles = true;
+        [SerializeField] private bool _showLayerName = false;
+        [SerializeField,Range(0,1)] private float _layerNamePosition = 0.7f;
         [SerializeField] private bool _showComponentColors = true;
         [SerializeField] private Color _colorRigidbody = Color.blue;
         [SerializeField] private Color _colorCollider = Color.green;
@@ -34,6 +36,8 @@ namespace Grainium.EditorEx
         public bool ShowTreeMapHierarchy => _showTreeMapHierarchy;
         public bool ShowTreeMapProject => _showTreeMapProject;
         public bool ShowActiveToggles => _showActiveToggles;
+        public bool ShowLayerName => _showLayerName;
+        public float LayerNamePosition => _layerNamePosition;
         public bool ShowComponentColors => _showComponentColors;
         public Color ColorRigidbody => _colorRigidbody;
         public Color ColorCollider => _colorCollider;
@@ -95,6 +99,16 @@ namespace Grainium.EditorEx
             var showComponentIcons = serializedObject.FindProperty("_showComponentIcons");
             EditorGUILayout.PropertyField(showComponentIcons);
 
+            var showLayerName = serializedObject.FindProperty("_showLayerName");
+            EditorGUILayout.PropertyField(showLayerName);
+
+            if(showLayerName.boolValue)
+            {
+                EditorGUI.indentLevel++;
+                var layerNamePosition = serializedObject.FindProperty("_layerNamePosition");
+                EditorGUILayout.PropertyField(layerNamePosition, new GUIContent("Position"));
+                EditorGUI.indentLevel--;
+            }
 
             var showComponentColors = serializedObject.FindProperty("_showComponentColors");
             EditorGUILayout.PropertyField(showComponentColors);
