@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static Codice.Client.Common.Connection.AskCredentialsToUser;
 
 namespace Grainium.EditorEx
 {
@@ -11,21 +10,30 @@ namespace Grainium.EditorEx
     {
         static HierarchyLayer()
         {
-            EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
+            //EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
         }
-        private static void OnGUI(int instanceID, Rect selectionRect)
+        public static void OnGUI(GameObject gameObj, Rect selectionRect,bool isMouseContains)
         {
             if (!GrainiumSettings.GetOrCreateInstance().ShowLayerName)
             {
                 return;
             }
-            var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (gameObj == null)
             {
                 return;
             }
-            selectionRect.x = selectionRect.max.x * GrainiumSettings.GetOrCreateInstance().LayerNamePosition;
-            GUI.Box(selectionRect, LayerMask.LayerToName(gameObj.layer), EditorStyles.miniLabel);
+            //selectionRect.x = selectionRect.max.x * GrainiumSettings.GetOrCreateInstance().LayerNamePosition;
+
+
+            string name = LayerMask.LayerToName(gameObj.layer);
+            var gui = EditorStyles.miniLabel;
+            if (selectionRect.Contains(Event.current.mousePosition))
+            {
+                selectionRect.xMax = selectionRect.xMin + gui.CalcSize(new GUIContent(name)).x;
+            }
+
+            GUI.Box(selectionRect, LayerMask.LayerToName(gameObj.layer), gui);
+            GUI.Box(selectionRect, string.Empty);
         }
     }
 }

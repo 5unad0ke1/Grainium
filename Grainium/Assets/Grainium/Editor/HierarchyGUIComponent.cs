@@ -9,82 +9,97 @@ namespace Grainium.EditorEx
     {
         private const int ICON_SIZE = 14;
 
-        static HierarchyGUIComponent()
-        {
-            EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
-        }
-
-        private static void OnGUI(int instanceID, Rect selectionRect)
+        public static void OnGUI(GameObject gameObj, Rect selectionRect, bool isMouseContains)
         {
             bool showComponentIcons = GrainiumSettings.GetOrCreateInstance().ShowComponentIcons;
             bool showActiveToggles = GrainiumSettings.GetOrCreateInstance().ShowActiveToggles;
-
             if (!showComponentIcons && !showActiveToggles)
                 return;
 
-            // instanceID をオブジェクト参照に変換
-            var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (gameObj == null)
             {
                 return;
             }
 
-            // オブジェクトが所持しているコンポーネント一覧を取得
             var components = gameObj.GetComponents<Component>();
             if (components.Length == 0)
             {
                 return;
             }
 
-            if (showActiveToggles)
-            {
-                selectionRect.x = selectionRect.xMax - ICON_SIZE * components.Length;
-            }
-            else
-            {
 
-                selectionRect.x = selectionRect.xMax - ICON_SIZE * (components.Length - 1);
-            }
+
+
+
             if (IsPrefab(gameObj))
             {
-                selectionRect.x -= ICON_SIZE;
+                selectionRect.xMax -= ICON_SIZE;
             }
-            selectionRect.width = ICON_SIZE;
-            selectionRect.height = ICON_SIZE;
 
-            foreach (var component in components)
+            if (showActiveToggles)
             {
-                if (!showComponentIcons)
+                OnToggle(selectionRect, gameObj);
+                selectionRect.xMax -= ICON_SIZE;
+            }
+            if (showComponentIcons)
+            {
+                OnComponentIcons(selectionRect, components, isMouseContains);
+            }
+        }
+        private static void OnComponentIcons(Rect selectionRect, Component[] components, bool isMouseContains)
+        {
+            Rect boxRect = new(selectionRect);
+            boxRect.width = ICON_SIZE;
+            boxRect.height = ICON_SIZE;
+
+            int max = (int)((selectionRect.xMax - selectionRect.xMin) / ICON_SIZE);
+            int length = isMouseContains ? components.Length : Mathf.Min(components.Length, max + 1);
+
+            int count = length - 1;
+            boxRect.x = selectionRect.xMax - ICON_SIZE * count;
+
+            bool isOverflow = length < components.Length;
+            for (int i = 0; i < length; i++)
+            {
+                if (components[i] is Transform)
                 {
                     selectionRect.x += ICON_SIZE;
                     continue;
                 }
-
-                if (component is Transform)
+                if (isOverflow && i == length - 1)
                 {
-                    selectionRect.x += ICON_SIZE;
-                    continue;
+
+                    break;
                 }
 
                 // コンポーネントのアイコン画像を取得
-                var texture2D = AssetPreview.GetMiniThumbnail(component);
+                var texture2D = AssetPreview.GetMiniThumbnail(components[i]);
 
-                GUI.DrawTexture(selectionRect, texture2D);
-                selectionRect.x += ICON_SIZE;
+                GUI.DrawTexture(boxRect, texture2D);
+                boxRect.x += ICON_SIZE;
             }
-
-            if (!showActiveToggles)
-                return;
+            if (isOverflow&&length > 1)
+            {
+                boxRect.x = selectionRect.xMax - ICON_SIZE * 2;
+                GUI.Box(boxRect, "~", EditorStyles.label);
+            }
+        }
+        private static void OnToggle(Rect rect,GameObject gameObj)
+        {
+            rect.xMin = rect.xMax - ICON_SIZE;
+            rect.width = ICON_SIZE;
+            rect.height = ICON_SIZE;
+            rect.x = rect.xMin;
 
             bool active = gameObj.activeSelf;
-            bool value = GUI.Toggle(selectionRect, active, "");
+            bool value = GUI.Toggle(rect, active, string.Empty);
             if (active != value)
             {
                 Undo.RecordObject(gameObj, "Toggle Active");
                 gameObj.SetActive(value);
                 EditorUtility.SetDirty(gameObj);
             }
-        }
+        } 
         private static bool IsPrefab(GameObject gameObj)
         {
             if (gameObj == null)

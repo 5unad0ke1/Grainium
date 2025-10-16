@@ -27,11 +27,6 @@ namespace Grainium.EditorEx
         }
         private static void OnGUIHierarchy(int instanceID, Rect selectionRect)
         {
-            if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapHierarchy)
-            {
-                return;
-            }
-
             var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
             if (gameObj == null)
             {
@@ -51,6 +46,11 @@ namespace Grainium.EditorEx
                     color.a = 0.5f;
                     EditorGUI.DrawRect(rect, color);
                 }
+
+            if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapHierarchy)
+            {
+                return;
+            }
 
             selectionRect.width = 14;
             selectionRect.height = 16;
