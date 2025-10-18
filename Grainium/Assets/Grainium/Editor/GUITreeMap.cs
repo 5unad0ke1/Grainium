@@ -17,10 +17,10 @@ namespace Grainium.EditorEx
         static GUITreeMap()
         {
             //AssetDatabase.LoadAssetAtPath()
-            _textureLine = GetAsset<Texture2D>("Line");
-            _textureObj = GetAsset<Texture2D>("Obj");
-            _textureChild = GetAsset<Texture2D>("Child");
-            _textureEnd = GetAsset<Texture2D>("End");
+            _textureLine = AssetHelper.FindAssetAtPath<Texture2D>("Line.png", "Texture");
+            _textureObj = AssetHelper.FindAssetAtPath<Texture2D>("Obj.png", "Texture");
+            _textureChild = AssetHelper.FindAssetAtPath<Texture2D>("Child.png", "Texture");
+            _textureEnd = AssetHelper.FindAssetAtPath<Texture2D>("End.png", "Texture");
 
             EditorApplication.hierarchyWindowItemOnGUI += OnGUIHierarchy;
             EditorApplication.projectWindowItemOnGUI += OnGUIProject;
@@ -174,6 +174,7 @@ namespace Grainium.EditorEx
         }
         private static T GetAsset<T>(string name) where T : Object
         {
+          
             string[] guids = AssetDatabase.FindAssets(name);
             foreach (string guid in guids)
             {

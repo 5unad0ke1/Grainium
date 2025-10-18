@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
-    internal static class Hierarchy
+    internal static class HierarchyEnhancer
     {
-        static Hierarchy()
+        static HierarchyEnhancer()
         {
             EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
         }
@@ -14,7 +14,6 @@ namespace Grainium.EditorEx
         {
             Rect boxRect = new(selectionRect);
             boxRect.xMin = boxRect.height * 4;
-
 
             bool showComponentIcons = GrainiumSettings.GetOrCreateInstance().ShowComponentIcons;
             bool showActiveToggles = GrainiumSettings.GetOrCreateInstance().ShowActiveToggles;
@@ -38,7 +37,6 @@ namespace Grainium.EditorEx
 
             Rect layerRect = new(selectionRect);
             Rect componentsRect = new(selectionRect);
-
 
             layerRect.xMin = Mathf.Lerp(boxRect.xMin, boxRect.xMax, layerOffset);
             layerRect.xMax = Mathf.Lerp(boxRect.xMin, boxRect.xMax, layerOffset + layerRatio);
