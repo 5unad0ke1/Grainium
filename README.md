@@ -16,8 +16,16 @@ Provides editor extensions for Unity's Inspector, Hierarchy, and Project views.
 2. Click on the `+` button → `add package from git URL...`
 3. Enter the following URL:
 
+### Official Version
+
 ```
 https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium
+```
+
+### Development Version
+
+```
+https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium&branch=develop
 ```
 
 # Support
