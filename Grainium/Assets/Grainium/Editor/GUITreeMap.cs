@@ -16,7 +16,6 @@ namespace Grainium.EditorEx
 
         static GUITreeMap()
         {
-            //AssetDatabase.LoadAssetAtPath()
             _textureLine = AssetHelper.FindAssetAtPath<Texture2D>("Line.png", "Texture");
             _textureObj = AssetHelper.FindAssetAtPath<Texture2D>("Obj.png", "Texture");
             _textureChild = AssetHelper.FindAssetAtPath<Texture2D>("Child.png", "Texture");
