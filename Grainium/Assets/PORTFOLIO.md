@@ -1,5 +1,5 @@
 # Portfolio - Grainium
-<!-->Mono 12<-->
+<!-- Mono 12 -->
 ```
     ▄▄▄▄                          ██                  ██                        
   ██▀▀▀▀█                         ▀▀                  ▀▀                        
@@ -36,8 +36,8 @@ Unityでの開発中、[Alchemy](https://github.com/annulusgames/Alchemy)とい�
 - Hierarchy・Inspectorを統一的に扱えるエディタツールキットを目指す。
 - よく使う設計をUtilityやフレームワーク化し、新規OSSとして公開。
 
-<!-->
-## 特徴
+
+<!-- ## 特徴
 - **Hierarchy拡張**
   - TreeMap
   - Componentのアイコン表示
@@ -47,7 +47,7 @@ Unityでの開発中、[Alchemy](https://github.com/annulusgames/Alchemy)とい�
   - Pingボタン
   - Propertiesボタン
 - **Project拡張**
-  - TreeMap
-<-->
+  - TreeMap -->
+
 
 © 2025 OIKAWA Yuki / 5unad0ke1  
