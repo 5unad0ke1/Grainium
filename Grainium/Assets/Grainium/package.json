@@ -1,6 +1,6 @@
 {
     "name": "com.5unad0ke1.grainium",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "displayName": "Grainium",
     "description": "Provides editor extensions for Unity.",
     "unity": "2021.3",

@@ -25,7 +25,7 @@ https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium
 ### 開発版
 
 ```
-https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium&branch=develop
+https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium#develop
 ```
 
 # サポート
