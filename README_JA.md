@@ -16,8 +16,16 @@ UnityのInspector・Hierarchy・Project向けのエディタ拡張を提供し�
 2. [`+`]ボタン → `add package from git URL...`
 3. 以下のURLを入力：
 
+### 正式版
+
 ```
 https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium
+```
+
+### 開発版
+
+```
+https://github.com/5unad0ke1/Grainium.git?path=/Grainium/Assets/Grainium#develop
 ```
 
 # サポート

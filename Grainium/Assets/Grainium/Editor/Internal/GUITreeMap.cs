@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -8,15 +9,8 @@ namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class GUITreeMap
-    {
-        private static Texture2D _textureLine;
-        private static Texture2D _textureObj;
-        private static Texture2D _textureChild;
-        private static Texture2D _textureEnd;
-
-        static GUITreeMap()
+    {static GUITreeMap()
         {
-            //AssetDatabase.LoadAssetAtPath()
             _textureLine = AssetHelper.FindAssetAtPath<Texture2D>("Line.png", "Texture");
             _textureObj = AssetHelper.FindAssetAtPath<Texture2D>("Obj.png", "Texture");
             _textureChild = AssetHelper.FindAssetAtPath<Texture2D>("Child.png", "Texture");
@@ -25,6 +19,23 @@ namespace Grainium.EditorEx
             EditorApplication.hierarchyWindowItemOnGUI += OnGUIHierarchy;
             EditorApplication.projectWindowItemOnGUI += OnGUIProject;
         }
+
+        private static Texture2D _textureLine;
+        private static Texture2D _textureObj;
+        private static Texture2D _textureChild;
+        private static Texture2D _textureEnd;
+
+        private static Type[] SortedTypes =
+        {
+            typeof(Rigidbody),typeof(Rigidbody2D),
+            typeof(Collider),typeof(Collider2D),
+            typeof(Camera),
+            typeof(AudioSource),
+            typeof(Light),
+            typeof(RectTransform)
+        };
+
+        
         private static void OnGUIHierarchy(int instanceID, Rect selectionRect)
         {
             var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
@@ -172,21 +183,6 @@ namespace Grainium.EditorEx
             }
             return t.GetSiblingIndex() == t.parent.childCount - 1;
         }
-        private static T GetAsset<T>(string name) where T : Object
-        {
-          
-            string[] guids = AssetDatabase.FindAssets(name);
-            foreach (string guid in guids)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                T asset = AssetDatabase.LoadAssetAtPath<T>(path);
-                if (asset != null && asset.name == name)
-                {
-                    return asset;
-                }
-            }
-            return null;
-        }
         private static bool IsLastSiblingFolder(string folderPath)
         {
             if (!AssetDatabase.IsValidFolder(folderPath))
@@ -216,38 +212,56 @@ namespace Grainium.EditorEx
         }
         private static bool TryGetColor(GameObject obj, out Color color)
         {
-            if (obj.TryGetComponent(out Rigidbody rb) || obj.TryGetComponent(out Rigidbody2D rb2d))
+            if (!TryGetFirstType(obj, SortedTypes, out var type))
+            {
+                color = Color.clear;
+                return false;
+            }
+
+            if (type == typeof(Rigidbody) || type == typeof(Rigidbody2D))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorRigidbody;
                 return true;
             }
-            if (obj.TryGetComponent(out Collider col) || obj.TryGetComponent(out Collider2D col2))
+            if (type == typeof(Collider) || type == typeof(Collider2D))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorCollider;
                 return true;
             }
-            if (obj.TryGetComponent(out Camera cam))
+            if (type == typeof(Camera))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorCamera;
                 return true;
             }
-            if (obj.TryGetComponent(out AudioSource audio))
+            if (type == typeof(AudioSource))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorAudio;
                 return true;
             }
-            if(obj.TryGetComponent(out Light light))
+            if (type == typeof(Light))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorLight;
                 return true;
             }
-            if (obj.TryGetComponent(out RectTransform rect))
+            if (type == typeof(RectTransform))
             {
                 color = GrainiumSettings.GetOrCreateInstance().ColorGUI;
                 return true;
             }
 
             color = Color.clear;
+            return false;
+        }
+        private static bool TryGetFirstType(GameObject obj, Type[] sorted, out Type result)
+        {
+            for (int i = 0; i < sorted.Length; i++)
+            {
+                if (!obj.TryGetComponent(sorted[i], out _))
+                    continue;
+                result = sorted[i];
+                return true;
+            }
+            result = null;
             return false;
         }
     }
