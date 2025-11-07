@@ -199,9 +199,10 @@ namespace Grainium.EditorEx
             if (!AssetDatabase.IsValidFolder(folderPath))
                 return false;
 
-            string parent = Path.GetDirectoryName(folderPath).Replace("\\", "/");
+            string parent = Path.GetDirectoryName(folderPath);
             if (string.IsNullOrEmpty(parent))
                 return false;
+            parent = parent.Replace("\\", "/");
 
             string[] siblings = AssetDatabase.GetSubFolders(parent);
             if (siblings.Length == 0)
