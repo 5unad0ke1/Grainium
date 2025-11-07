@@ -21,20 +21,20 @@ Unity Editor拡張の「**扱いやすさと分かりやすさの両立**」を�
 
 # #1 開発のキッカケ
 
-### 問題
+## 問題
 
 既存の[Alchemy](https://github.com/annulusgames/Alchemy)では、拡張時に以下の問題があった：
 - PrefabのGameObjectでのボタンの干渉
 - コンポーネントアイコンにTransformも表示され、視認性が悪い
 - アンインストール後に不具合が発生
 
-### 解決
+## 解決
 
 **Grainiumでは**「干渉の少ない構造」と「処理の明確化」を目標に、
 ``EditorApplication.hierarchyWindowItemOnGUI()``等の既存イベントを活用し、
 IMGUIをベースに**独立性重視**の描画構造を設計。
 
-### 開発理由
+## 開発理由
 
 [Alchemy](https://github.com/annulusgames/Alchemy)の作者本人はプルリクエストを求めるだけで修正には消極的だった。  
 修正を試みるも構造が複雑で難しく、自分好みの拡張エディタライブラリを一から設計することにした。
