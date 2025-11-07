@@ -46,76 +46,9 @@ IMGUIをベースに**独立性重視**の描画構造を設計。
 - IMGUIイベントの明確なフロー分離
 - 「拡張ポイント」を明示化して他ツールと競合しにくくする
 
-## 実装例
-
-```cs
-// Transform階層の深さを再帰なしで算出
-private static int GetHierarchyDepth(Transform t)
-{
-    int depth = 0;
-    while (t.parent != null)
-    {
-        depth++;
-        t = t.parent;
-    }
-    return depth;
-}
-```
-
-```cs
-// Projectウィンドウのレイアウト（1列/2列）を判定
-private static bool IsOneColumnLayout()
-{
-    var type = typeof(Editor).Assembly.GetType("UnityEditor.ProjectBrowser");
-    var windows = Resources.FindObjectsOfTypeAll(type);
-    if (windows.Length == 0) return true;
-
-    var field = type.GetField("m_ViewMode", BindingFlags.Instance | BindingFlags.NonPublic);
-    int viewMode = (int)field.GetValue(windows[0]);
-    return viewMode == 0;
-}
-```
-
-```cs
-// Inspector上部にPing/Propertiesボタンを追加
- [InitializeOnLoad]
- internal static class InspectorButtons
- {
-     static InspectorButtons()
-     {
-         Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
-     }
-     private static void OnPostHeaderGUI(Editor editor)
-     {
-         GUILayout.BeginHorizontal();
-         GUILayout.FlexibleSpace();
-
-         if(GrainiumSettings.GetOrCreateInstance().ShowPingButton)
-             PingButton(editor);
-         if (GrainiumSettings.GetOrCreateInstance().ShowPropertiesButton)
-             PropertiesWindowButton(editor);
-
-         GUILayout.EndHorizontal();
-     }
-     private static void PingButton(Editor editor)
-     {
-         if (GUILayout.Button("Ping", GUILayout.Width(120)))
-         {
-             EditorGUIUtility.PingObject(editor.target);
-         }
-     }
-     private static void PropertiesWindowButton(Editor editor)
-     {
-         if (GUILayout.Button("Properties", GUILayout.Width(120)))
-         {
-             EditorUtility.OpenPropertyEditor(editor.target);
-         }
-     }
- }
-```
-
-
 ## 設計
+
+
 
 この構造により、他ツールとの競合を防ぎつつ、拡張点を明示化できる
 
@@ -309,6 +242,74 @@ sequenceDiagram
     alt Properties
         InspectorButtons->>Editor: EditorUtility.OpenPropertyEditor(target)
     end
+```
+
+## 実装例
+
+```cs
+// Transform階層の深さを再帰なしで算出
+private static int GetHierarchyDepth(Transform t)
+{
+    int depth = 0;
+    while (t.parent != null)
+    {
+        depth++;
+        t = t.parent;
+    }
+    return depth;
+}
+```
+
+```cs
+// Projectウィンドウのレイアウト（1列/2列）を判定
+private static bool IsOneColumnLayout()
+{
+    var type = typeof(Editor).Assembly.GetType("UnityEditor.ProjectBrowser");
+    var windows = Resources.FindObjectsOfTypeAll(type);
+    if (windows.Length == 0) return true;
+
+    var field = type.GetField("m_ViewMode", BindingFlags.Instance | BindingFlags.NonPublic);
+    int viewMode = (int)field.GetValue(windows[0]);
+    return viewMode == 0;
+}
+```
+
+```cs
+// Inspector上部にPing/Propertiesボタンを追加
+ [InitializeOnLoad]
+ internal static class InspectorButtons
+ {
+     static InspectorButtons()
+     {
+         Editor.finishedDefaultHeaderGUI += OnPostHeaderGUI;
+     }
+     private static void OnPostHeaderGUI(Editor editor)
+     {
+         GUILayout.BeginHorizontal();
+         GUILayout.FlexibleSpace();
+
+         if(GrainiumSettings.GetOrCreateInstance().ShowPingButton)
+             PingButton(editor);
+         if (GrainiumSettings.GetOrCreateInstance().ShowPropertiesButton)
+             PropertiesWindowButton(editor);
+
+         GUILayout.EndHorizontal();
+     }
+     private static void PingButton(Editor editor)
+     {
+         if (GUILayout.Button("Ping", GUILayout.Width(120)))
+         {
+             EditorGUIUtility.PingObject(editor.target);
+         }
+     }
+     private static void PropertiesWindowButton(Editor editor)
+     {
+         if (GUILayout.Button("Properties", GUILayout.Width(120)))
+         {
+             EditorUtility.OpenPropertyEditor(editor.target);
+         }
+     }
+ }
 ```
 # #3 学び・改善点
 
