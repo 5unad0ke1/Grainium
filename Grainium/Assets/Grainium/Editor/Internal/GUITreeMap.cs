@@ -100,6 +100,10 @@ namespace Grainium.EditorEx
         }
         private static void OnGUIProject(string guid, Rect selectionRect)
         {
+            if (Event.current.type != EventType.Repaint)
+            {
+                return;
+            }
             if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapProject)
             {
                 return;
@@ -116,10 +120,6 @@ namespace Grainium.EditorEx
         }
         private static void OnGUIProjectTwoColumnLayout(string guid, Rect selectionRect)
         {
-            if (Event.current.type != EventType.Repaint)
-            {
-                return;
-            }
             if (selectionRect.x < 16 || selectionRect.height > 16)
             {
                 return;
