@@ -130,13 +130,6 @@ namespace Grainium.EditorEx
             var splitPath = path.Split('/');
             int depth = splitPath.Length - 2;
 
-            if (false && depth >= 3)
-            {
-                Color original = GUI.color;
-                GUI.color = Color.red;
-                GUI.Box(selectionRect, string.Empty);
-                GUI.color = original;
-            }
 
             if (depth <= -1)
                 return;
