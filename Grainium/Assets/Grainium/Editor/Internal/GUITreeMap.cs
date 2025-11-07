@@ -9,7 +9,8 @@ namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class GUITreeMap
-    {static GUITreeMap()
+    {
+        static GUITreeMap()
         {
             _textureLine = AssetHelper.FindAssetAtPath<Texture2D>("Line.png", "Texture");
             _textureObj = AssetHelper.FindAssetAtPath<Texture2D>("Obj.png", "Texture");
@@ -106,12 +107,76 @@ namespace Grainium.EditorEx
 
             if (IsOneColumnLayout())
             {
-                return;
+                OnGUIProjectOneColumnLayout(guid, selectionRect);
             }
+            else
+            {
+                OnGUIProjectTwoColumnLayout(guid, selectionRect);
+            }
+        }
+        private static void OnGUIProjectTwoColumnLayout(string guid, Rect selectionRect)
+        {
             if (selectionRect.x < 16 || selectionRect.height > 16)
             {
                 return;
             }
+
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (!AssetDatabase.IsValidFolder(path))
+            {
+                return;
+            }
+
+            var splitPath = path.Split('/');
+            int depth = splitPath.Length - 2;
+
+            if (false && depth >= 3)
+            {
+                Color original = GUI.color;
+                GUI.color = Color.red;
+                GUI.Box(selectionRect, string.Empty);
+                GUI.color = original;
+            }
+
+            if (depth <= -1)
+                return;
+
+            selectionRect.width = 14;
+            selectionRect.height = 16;
+            selectionRect.x = selectionRect.xMin - selectionRect.width - 1;
+
+            if (AssetDatabase.GetSubFolders(path).Length == 0)
+            {
+                GUI.DrawTexture(selectionRect, _textureChild);
+            }
+            selectionRect.x -= selectionRect.width;
+
+            if (IsLastSiblingFolder(path))
+            {
+                GUI.DrawTexture(selectionRect, _textureEnd);
+            }
+            else
+            {
+                GUI.DrawTexture(selectionRect, _textureObj);
+            }
+            selectionRect.x -= selectionRect.width;
+
+            for (int i = 0; i < depth; i++)
+            {
+                path = Path.GetDirectoryName(path).Replace("\\", "/");
+                if (!string.IsNullOrEmpty(path) && IsLastSiblingFolder(path))
+                {
+                    selectionRect.x -= selectionRect.width;
+                    continue;
+                }
+                GUI.DrawTexture(selectionRect, _textureLine);
+                selectionRect.x -= selectionRect.width;
+            }
+        }
+        private static void OnGUIProjectOneColumnLayout(string guid,Rect selectionRect)
+        {
+            //開発中で未実装
+            return;
 
             string path = AssetDatabase.GUIDToAssetPath(guid);
             if (!AssetDatabase.IsValidFolder(path))
