@@ -15,7 +15,7 @@ Grainium — “Minimal yet Flexible Editor Framework for Unity”
 Hierarchy・Project・Inspectorを統一的・低依存的に拡張できるツールキット。
 Unity Editor拡張の「**扱いやすさと分かりやすさの両立**」を追求した。
 
-![](Screenshot.png)
+![Grainium Editor UI Screenshot showing hierarchy and inspector enhancements](Screenshot.png)
 
 ---
 
