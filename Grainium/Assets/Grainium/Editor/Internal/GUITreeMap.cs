@@ -9,7 +9,8 @@ namespace Grainium.EditorEx
 {
     [InitializeOnLoad]
     internal static class GUITreeMap
-    {static GUITreeMap()
+    {
+        static GUITreeMap()
         {
             _textureLine = AssetHelper.FindAssetAtPath<Texture2D>("Line.png", "Texture");
             _textureObj = AssetHelper.FindAssetAtPath<Texture2D>("Obj.png", "Texture");
@@ -99,6 +100,10 @@ namespace Grainium.EditorEx
         }
         private static void OnGUIProject(string guid, Rect selectionRect)
         {
+            if (Event.current.type != EventType.Repaint)
+            {
+                return;
+            }
             if (!GrainiumSettings.GetOrCreateInstance().ShowTreeMapProject)
             {
                 return;
@@ -106,8 +111,15 @@ namespace Grainium.EditorEx
 
             if (IsOneColumnLayout())
             {
-                return;
+                OnGUIProjectOneColumnLayout(guid, selectionRect);
             }
+            else
+            {
+                OnGUIProjectTwoColumnLayout(guid, selectionRect);
+            }
+        }
+        private static void OnGUIProjectTwoColumnLayout(string guid, Rect selectionRect)
+        {
             if (selectionRect.x < 16 || selectionRect.height > 16)
             {
                 return;
@@ -122,13 +134,6 @@ namespace Grainium.EditorEx
             var splitPath = path.Split('/');
             int depth = splitPath.Length - 2;
 
-            if (false && depth >= 3)
-            {
-                Color original = GUI.color;
-                GUI.color = Color.red;
-                GUI.Box(selectionRect, string.Empty);
-                GUI.color = original;
-            }
 
             if (depth <= -1)
                 return;
@@ -165,6 +170,12 @@ namespace Grainium.EditorEx
                 selectionRect.x -= selectionRect.width;
             }
         }
+        private static void OnGUIProjectOneColumnLayout(string guid,Rect selectionRect)
+        {
+            //開発中で未実装
+            return;
+
+        }
         private static int GetHierarchyDepth(Transform t)
         {
             int depth = 0;
@@ -188,9 +199,10 @@ namespace Grainium.EditorEx
             if (!AssetDatabase.IsValidFolder(folderPath))
                 return false;
 
-            string parent = Path.GetDirectoryName(folderPath).Replace("\\", "/");
+            string parent = Path.GetDirectoryName(folderPath);
             if (string.IsNullOrEmpty(parent))
                 return false;
+            parent = parent.Replace("\\", "/");
 
             string[] siblings = AssetDatabase.GetSubFolders(parent);
             if (siblings.Length == 0)
