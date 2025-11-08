@@ -12,7 +12,8 @@ namespace Grainium.EditorEx
         }
         private static void OnGUI(int instanceID, Rect selectionRect)
         {
-            Rect boxRect = new(selectionRect);
+            Rect defaultRect = selectionRect;
+            Rect boxRect = selectionRect;
             boxRect.xMin = boxRect.height * 4;
 
             bool showComponentIcons = GrainiumSettings.GetOrCreateInstance().ShowComponentIcons;
