@@ -36,21 +36,25 @@ namespace Grainium.EditorEx
             typeof(RectTransform)
         };
 
-        
+
         private static void OnGUIHierarchy(int instanceID, Rect selectionRect)
         {
-            var gameObj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
-            if (gameObj == null)
+            GameObject instanceObj;
             {
-                return;
+                var obj = EditorUtility.InstanceIDToObject(instanceID);
+                if (obj is not GameObject gameObj)
+                {
+                    return;
+                }
+                instanceObj = gameObj;
             }
 
-            int depth = GetHierarchyDepth(gameObj.transform);
-            Transform parent = gameObj.transform;
+            int depth = GetHierarchyDepth(instanceObj.transform);
+            Transform parent = instanceObj.transform;
             bool hasChild = parent.childCount > 0;
 
             if (GrainiumSettings.GetOrCreateInstance().ShowComponentColors)
-                if (TryGetColor(gameObj, out var color))
+                if (TryGetColor(instanceObj, out var color))
                 {
                     var rect = selectionRect;
                     rect.xMax = 14 * 3 + 4;
@@ -148,7 +152,7 @@ namespace Grainium.EditorEx
             }
             selectionRect.x -= selectionRect.width;
 
-            if (IsLastSiblingFolder(path))
+            if (IsLastSiblingDirectory(path))
             {
                 GUI.DrawTexture(selectionRect, _textureEnd);
             }
@@ -161,7 +165,7 @@ namespace Grainium.EditorEx
             for (int i = 0; i < depth; i++)
             {
                 path = Path.GetDirectoryName(path).Replace("\\", "/");
-                if (!string.IsNullOrEmpty(path) && IsLastSiblingFolder(path))
+                if (!string.IsNullOrEmpty(path) && IsLastSiblingDirectory(path))
                 {
                     selectionRect.x -= selectionRect.width;
                     continue;
@@ -170,11 +174,51 @@ namespace Grainium.EditorEx
                 selectionRect.x -= selectionRect.width;
             }
         }
-        private static void OnGUIProjectOneColumnLayout(string guid,Rect selectionRect)
+        private static void OnGUIProjectOneColumnLayout(string guid, Rect selectionRect)
         {
-            //開発中で未実装
-            return;
 
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+
+            var splitPath = path.Split('/');
+            int depth = splitPath.Length - 2;
+
+            if (false && depth >= 3)
+            {
+                Color original = GUI.color;
+                GUI.color = Color.red;
+                GUI.Box(selectionRect, string.Empty);
+                GUI.color = original;
+            }
+
+            if (depth <= -1)
+                return;
+
+            selectionRect.width = 14;
+            selectionRect.height = 16;
+            selectionRect.x = selectionRect.xMin - selectionRect.width - 1;
+
+            if (AssetDatabase.GetSubFolders(path).Length == 0)
+            {
+                GUI.DrawTexture(selectionRect, _textureChild);
+            }
+            selectionRect.x -= selectionRect.width;
+
+
+            GUI.DrawTexture(selectionRect, _textureObj);
+
+            selectionRect.x -= selectionRect.width;
+
+            for (int i = 0; i < depth; i++)
+            {
+                path = Path.GetDirectoryName(path).Replace("\\", "/");
+                if (string.IsNullOrEmpty(path) && IsLastSiblingDirectory(path))
+                {
+                    selectionRect.x -= selectionRect.width;
+                    continue;
+                }
+                GUI.DrawTexture(selectionRect, _textureLine);
+                selectionRect.x -= selectionRect.width;
+            }
         }
         private static int GetHierarchyDepth(Transform t)
         {
@@ -194,7 +238,7 @@ namespace Grainium.EditorEx
             }
             return t.GetSiblingIndex() == t.parent.childCount - 1;
         }
-        private static bool IsLastSiblingFolder(string folderPath)
+        private static bool IsLastSiblingDirectory(string folderPath)
         {
             if (!AssetDatabase.IsValidFolder(folderPath))
                 return false;
