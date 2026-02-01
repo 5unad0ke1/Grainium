@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Grainium.EditorEx
+namespace Grainium.EditorExtensions
 {
     [InitializeOnLoad]
     internal static class GUITreeMap

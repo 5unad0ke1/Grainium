@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Grainium.EditorEx
+namespace Grainium.EditorExtensions
 {
     internal static class AssetHelper
     {
@@ -10,7 +10,7 @@ namespace Grainium.EditorEx
         {
             string path = outsideScope ? $"{relativePath}/{nameAsset}" : GetFullPath($"{relativePath}/{nameAsset}");
             var t = AssetDatabase.LoadAssetAtPath(path, typeof(T));
-            if (t == null) 
+            if (t == null)
                 throw new System.NullReferenceException($"Couldn't load the {nameof(T)} at path :{path}");
             return t as T;
         }

@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Grainium.EditorEx
+namespace Grainium.EditorExtensions.Hierarchy
 {
     [InitializeOnLoad]
     internal static class HierarchyLayer
     {
-        static HierarchyLayer()
-        {
-            //EditorApplication.hierarchyWindowItemOnGUI += OnGUI;
-        }
-        public static void OnGUI(GameObject gameObj, Rect selectionRect,bool isMouseContains)
+        public static void OnGUI(GameObject gameObj, Rect selectionRect)
         {
             if (!GrainiumSettings.GetOrCreateInstance().ShowLayerName)
             {
@@ -22,7 +16,6 @@ namespace Grainium.EditorEx
             {
                 return;
             }
-            //selectionRect.x = selectionRect.max.x * GrainiumSettings.GetOrCreateInstance().LayerNamePosition;
 
 
             string name = LayerMask.LayerToName(gameObj.layer);
