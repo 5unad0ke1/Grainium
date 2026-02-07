@@ -80,6 +80,10 @@ namespace Grainium.EditorExtensions.Hierarchy
                 Behaviour behaviour when !behaviour.enabled => 0.25f,
                 Renderer renderer when !renderer.enabled => 0.25f,
                 Collider collider when !collider.enabled => 0.25f,
+
+                LODGroup lod when !lod.enabled => 0.25f,
+                Cloth cloth when !cloth.enabled => 0.25f,
+
                 _ => 1f,
             };
         }
