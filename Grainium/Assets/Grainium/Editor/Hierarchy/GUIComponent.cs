@@ -56,13 +56,7 @@ namespace Grainium.EditorExtensions.Hierarchy
                 var color = GUI.color;
 
                 Color newColor = Color.white;
-                newColor.a = components[i] switch
-                {
-                    Behaviour behaviour => behaviour.enabled ? 1f : 0.25f,
-                    Renderer renderer => renderer.enabled ? 1f : 0.25f,
-                    Collider collider => collider.enabled ? 1f : 0.25f,
-                    _ => 1f,
-                };
+                newColor.a = GetEnablesToAlpha(components[i]);
 
                 GUI.color = newColor;
                 GUI.DrawTexture(boxRect, texture2D, ScaleMode.ScaleToFit);
@@ -75,6 +69,19 @@ namespace Grainium.EditorExtensions.Hierarchy
                 boxRect.x = selectionRect.xMax - ICON_SIZE * 2;
                 GUI.Box(boxRect, "~", EditorStyles.label);
             }
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static float GetEnablesToAlpha(Component component)
+        {
+            return component switch
+            {
+                Behaviour behaviour when !behaviour.enabled => 0.25f,
+                Renderer renderer when !renderer.enabled => 0.25f,
+                Collider collider when !collider.enabled => 0.25f,
+                _ => 1f,
+            };
         }
 
         private const int ICON_SIZE = 14;
