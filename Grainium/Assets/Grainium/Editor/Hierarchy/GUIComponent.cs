@@ -53,8 +53,22 @@ namespace Grainium.EditorExtensions.Hierarchy
 
                 var texture2D = AssetPreview.GetMiniThumbnail(components[i]);
 
-                GUI.DrawTexture(boxRect, texture2D);
+                var color = GUI.color;
+
+                Color newColor = Color.white;
+                newColor.a = components[i] switch
+                {
+                    Behaviour behaviour => behaviour.enabled ? 1f : 0.25f,
+                    Renderer renderer => renderer.enabled ? 1f : 0.25f,
+                    Collider collider => collider.enabled ? 1f : 0.25f,
+                    _ => 1f,
+                };
+
+                GUI.color = newColor;
+                GUI.DrawTexture(boxRect, texture2D, ScaleMode.ScaleToFit);
                 boxRect.x += ICON_SIZE;
+
+                GUI.color = color;
             }
             if (isOverflow && length > 1)
             {
