@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Grainium.EditorExtensions.Hierarchy
 {
@@ -55,7 +56,7 @@ namespace Grainium.EditorExtensions.Hierarchy
 
                 var color = GUI.color;
 
-                Color newColor = Color.white;
+                Color newColor = IsHasRaycastTarget(components[i]) ? Color.Lerp(Color.green, Color.white, 0.5f) : Color.white;
                 newColor.a = GetEnablesToAlpha(components[i]);
 
                 GUI.color = newColor;
@@ -86,6 +87,14 @@ namespace Grainium.EditorExtensions.Hierarchy
 
                 _ => 1f,
             };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool IsHasRaycastTarget(Component component)
+        {
+            if (component is not Graphic graphic)
+                return false;
+            return graphic.raycastTarget;
         }
 
         private const int ICON_SIZE = 14;
