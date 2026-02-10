@@ -38,7 +38,14 @@ namespace Grainium.EditorExtensions.Hierarchy
         private static void OnCounter(in GameObject gameObj, in Rect rect)
         {
             int count = gameObj.transform.childCount;
+
+            var color = GUI.color;
+            if (count == 0)
+                GUI.color = Color.grey;
+
             GUI.Box(rect, count.ToString(), _style);
+
+            GUI.color = color;
         }
 
         private static readonly GUIStyle _style;
